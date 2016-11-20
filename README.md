@@ -1,3 +1,3 @@
-# working-title
+# Black Jack
 
-Working title is a program that we are working on for CS252 systems programming at Purdue University. We still have yet to come up with a concrete idea for this project. 
+Black Jack is a program that we are working on for CS252 systems programming at Purdue University.
