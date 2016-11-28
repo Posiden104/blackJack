@@ -1,7 +1,7 @@
-package com.blackjack.service;
+package com.blackjack.status;
 
 /**
- * Created by posid on 11/21/2016.
+ * Created by posid on 11/21/2016
  */
 public enum PlayerStatus {
     // waiting on player bet
@@ -14,5 +14,5 @@ public enum PlayerStatus {
     WAITING_ON_ACTION,
 
     // other error, call status again
-    RECALL;
+    RECALL
 }

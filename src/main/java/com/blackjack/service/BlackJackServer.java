@@ -4,29 +4,36 @@ package com.blackjack.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.blackjack.room.Table;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Created by posid on 11/20/2016.
+ * Created by posid on 11/20/2016
  */
 @SpringBootApplication
 @ComponentScan({ "com.blackjack"})
-public class BlackJack {
+public class BlackJackServer {
 
     List<Table> tables;
 
-    public BlackJack(){
+    private BlackJackServer(){
         tables = new ArrayList<>();
+       /*
         Table t = new Table(1);
         tables.add(t);
+
+        for(Table tb : tables){
+            tb.play();
+        }
+        */
     }
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(BlackJack.class, args);
+        ApplicationContext ctx = SpringApplication.run(BlackJackServer.class, args);
 
-        BlackJack b = new BlackJack();
+        BlackJackServer b = new BlackJackServer();
     }
 }

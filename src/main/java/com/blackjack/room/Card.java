@@ -1,29 +1,29 @@
-package com.blackjack.service;
+package com.blackjack.room;
 
 /**
- * Created by posid on 11/20/2016.
+ * Created by posid on 11/20/2016
  */
-public class Card {
+class Card {
 
-    private String card;
+    private String name;
     private int value;
 
-    public String getCard() {
-        return card;
+    public String getName() {
+        return name;
     }
 
-    public void setCard(String card) {
-        this.card = card;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getValue(){
         return this.value;
     }
 
-    public Card(String card, String suit){
-        this.card = card;
-        this.card += suit;
-        switch(card){
+    public Card(String name, String suit){
+        this.name = name;
+        this.name += suit;
+        switch(name){
             case "A":
                 this.value = -1;
                 break;
@@ -37,7 +37,7 @@ public class Card {
                 this.value = 10;
                 break;
             default:
-                this.value = Integer.parseInt(card);
+                this.value = Integer.parseInt(name);
                 break;
         }
     }
