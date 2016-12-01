@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import com.blackjack.room.Player;
 import com.blackjack.room.Table;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +22,10 @@ public class BlackJackServer {
 
     private List<Table> tables;
 
-    private long playerID = 0;
+    private int playerID = 0;
+
+    @Autowired
+    private static BlackJackServer bjs;
 
     private BlackJackServer(){
         tables = new ArrayList<>();
@@ -39,23 +44,28 @@ public class BlackJackServer {
         }
     }
 
-    public void addPl(){
-
- //       Player p = new Player(++playerID);
+    public Vector addPlayer(){
+        Player p = new Player(++playerID);
         Vector v = new Vector();
         for(Table t : tables){
-//            if(t.addPlayer(p)){
-            tables.size();
-//            }
+            if(t.addPlayer(p)){
+                v.add(0, p.getPlayerID());
+                v.add(1 , t.getTableID());
+                return v;
+            }
         }
         addTables(1);
- //       tables.get(tables.size() - 1).addPlayer(p);
+        tables.get(tables.size() - 1).addPlayer(p);
+        v.add(0, p.getPlayerID());
+        v.add(1, tables.get(tables.size() -1).getTableID());
+
+        return v;
     }
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(BlackJackServer.class, args);
 
-        BlackJackServer b = new BlackJackServer();
-        b.addTables(0);
+        bjs = new BlackJackServer();
+        bjs.addTables(0);
     }
 }

@@ -12,15 +12,17 @@ class Card {
         return name;
     }
 
+    /*
     public void setName(String name) {
-        this.name = name;
+    this.name = name;
     }
+    */
 
     public int getValue(){
         return this.value;
     }
 
-    public Card(String name, String suit){
+    Card(String name, String suit){
         this.name = name;
         this.name += suit;
         switch(name){

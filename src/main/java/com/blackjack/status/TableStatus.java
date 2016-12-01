@@ -26,5 +26,11 @@ public enum TableStatus {
     WAITING_ON_6,
 
     // Dealer's turn
-    DEALER_TURN
+    DEALER_TURN,
+
+    // Waiting on players to bet before the hand
+    WAITING_ON_BETS,
+
+    // Hand is over, waiting on all players to check in before going to next hand
+    WAITING_ON_CHECKIN
 }

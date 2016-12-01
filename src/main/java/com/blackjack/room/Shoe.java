@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 class Shoe {
     private Card[] cards;
     private int nextCard = -1;
+    private int penetration = 0;
 
     /*
         Standard constructor
@@ -30,8 +31,15 @@ class Shoe {
 
     Card drawCard(){
         nextCard ++;
+        if(nextCard == penetration){
+            return new Card("Cut", "Card");
+        }
         return cards[nextCard];
         //return new Card("Ace", "S");
+    }
+
+    Card drawAfterCutCard(){
+        return cards[nextCard];
     }
 
     /* Shuffle the deck to randomize the next shoe */
@@ -46,6 +54,12 @@ class Shoe {
             cards[index] = cards[i];
             cards[i] = a;
         }
+
+        double lowerBound = cards.length * 1.25;
+        double upperBound = cards.length *1.75;
+        int range = (int)(upperBound - lowerBound);
+        penetration = rnd.nextInt(range + 1) + 65;
+        nextCard = -1;
     }
 
     private Card genCard(int cardNum){
