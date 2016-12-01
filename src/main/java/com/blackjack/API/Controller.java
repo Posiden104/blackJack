@@ -21,4 +21,10 @@ public class Controller {
         return "This is a test endpoint";
     }
 
+    /* Request update */
+    @RequestMapping("/update")
+    public String update(){
+        return "no update yet";
+    }
+
 }

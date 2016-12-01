@@ -12,6 +12,7 @@ public class Table {
     private int tableID;
     public final int N_SEATS = 6;
     private int n_players = 0;
+    private boolean full = false;
     private Shoe shoe;
     private TableStatus status;
     private List<Player> players;
@@ -73,7 +74,6 @@ public class Table {
             players.add(p);
             return true;
         }
-
         return false;
     }
 
@@ -93,6 +93,10 @@ public class Table {
      */
     private void close(){
 
+    }
+
+    public boolean isFull(){
+        return full;
     }
 
 }

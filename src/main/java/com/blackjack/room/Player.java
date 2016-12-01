@@ -24,4 +24,8 @@ class Player {
     void dealCard(Card c){
         hand.add(c);
     }
+
+    public int getPlayerID(){
+        return playerID;
+    }
 }
