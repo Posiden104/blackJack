@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dae39c11-90bf-40c4-86ce-ce7b356929fb" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/blackjack/API/Controller.java" afterPath="$PROJECT_DIR$/src/main/java/com/blackjack/API/Controller.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/blackjack/room/Player.java" afterPath="$PROJECT_DIR$/src/main/java/com/blackjack/room/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/blackjack/room/Shoe.java" afterPath="$PROJECT_DIR$/src/main/java/com/blackjack/room/Shoe.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/blackjack/room/Table.java" afterPath="$PROJECT_DIR$/src/main/java/com/blackjack/room/Table.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/blackjack/service/BlackJackServer.java" afterPath="$PROJECT_DIR$/src/main/java/com/blackjack/service/BlackJackServer.java" />
     </list>
     <ignored path="BlackJack.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -733,7 +728,14 @@
       <option name="project" value="LOCAL" />
       <updated>1480363445479</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Edits">
+      <created>1480560797420</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1480560797420</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -782,7 +784,8 @@
     <MESSAGE value="table almost finished" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;" />
     <MESSAGE value="refactor, table almost finished&#10;&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor, table almost finished&#10;&#10;" />
+    <MESSAGE value="Edits" />
+    <option name="LAST_COMMIT_MESSAGE" value="Edits" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
