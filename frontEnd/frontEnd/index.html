@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>BlackJack - CS252</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel = "stylesheet" type = "text/css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/blackjack.css">
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+    
+<body>
+    
+    <div class="row">
+        <div class="col-lg-1 col-md-1">
+        </div>
+        <div class="col-lg-10 col-md-10">
+            <div class="jumbotron">
+                
+                <!--FIRST ROW-->
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-default">
+                            <div class="panel-body">Player 6</div>
+                            <div class="panel-score">21</div>
+                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
+                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
+                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
+                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
+                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                    </div>
+                </div>
+                <!--SECOND ROW -- includes alerts -->
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-default">
+                            <div class="panel-body">Player 5</div>
+                            <div class="panel-score">21</div>
+                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
+                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
+                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
+                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
+                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="alert">
+                            <h2>Player 1's Turn</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-default">
+                            <div class="panel-body">Player 4</div>
+                            <div class="panel-score">21</div>
+                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
+                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
+                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
+                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
+                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!--THIRD ROW-->
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-default">
+                            <div class="panel-body">Player 3</div>
+                            <div class="panel-score">21</div>
+                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
+                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
+                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
+                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
+                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-default">
+                            <div class="panel-body">Player 2</div>
+                            <div class="panel-score">21</div>
+                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
+                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
+                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
+                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
+                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!--LAST ROW-->
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-default">
+                            <div class="panel-body">Player 1</div>
+                            <div class="panel-score">21</div>
+                             <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
+                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
+                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
+                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
+                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                        </div>
+                        </div>
+                    </div>    
+                    <div class="col-lg-4 col-md-4">
+                    </div>
+                </div>
+                
+                
+                <div class="playbuttons">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Hit</button>
+                        <button type="button" class="btn btn-primary">Stay</button>
+                        <button type="button" class="btn btn-primary">Bet</button>
+                        <button type="button" class="btn btn-primary">Increase Bet</button>
+                        <button type="button" class="btn btn-primary">Decrease Bet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1 col-md-1">
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>
