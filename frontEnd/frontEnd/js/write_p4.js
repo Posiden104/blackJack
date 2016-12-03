@@ -1,5 +1,5 @@
 var message = '';
-var playerName = "ThisGuy";
+var playerName = "ThisGuy4";
 var playerScore = "100";
 
 var playerHand = ["KC", "6C", "3C"];

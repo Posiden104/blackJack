@@ -1,6 +1,6 @@
 var message = '';
-var playerName = "ThisGuy";
-var playerScore = "100";
+var playerName = "Dealer";
+var playerScore = "21";
 
 var playerHand = ["KC", "6C", "3C"];
 var cardNum = ["1", "2", "3", "4", "5"];
@@ -17,6 +17,7 @@ if (1) {
     
         document.write(message);
 }
+
 else {
     message = 'No Data Available';
     document.write(message);
