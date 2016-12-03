@@ -1,5 +1,6 @@
 package com.blackjack.room;
 
+import com.blackjack.status.PlayerAction;
 import com.blackjack.status.PlayerStatus;
 import com.blackjack.status.TableStatus;
 
@@ -12,227 +13,284 @@ import java.util.List;
 public class Table {
 
 	// Private
-    private final int N_SEATS = 6;
+	private final int N_SEATS = 6;
 
-    private int tableID;
-    private int n_players = 0;
-    private int n_CheckedIn = 0;
+	private int tableID;
+	private int n_players = 0;
+	private int n_CheckedIn = 0;
+	private int playerTurn = 0;
 
-    private boolean shuffleNext = false;
-    private boolean isSoft = false;
-    
+	private boolean shuffleNext = false;
+	private boolean isSoft = false;
 
-    private Shoe shoe;
-    private TableStatus status;
-    private List<Player> players;
-    private ArrayList<Card> dealerHand;
-    private Card hiddenCard;
+	private Shoe shoe;
+	private TableStatus status;
+	private List<Player> players;
+	private ArrayList<Card> dealerHand;
+	private Card hiddenCard;
 
-    // Public
-    public boolean isPlaying = false;
-    
+	// Public
+	public boolean isPlaying = false;
 
-    public Table(int tableID){
-        this.tableID = tableID;
-        shoe = new Shoe();
-        shoe.shuffle();
-        players = new ArrayList<>();
-        dealerHand = new ArrayList<>();
+	public Table(int tableID) {
+		this.tableID = tableID;
+		shoe = new Shoe();
+		shoe.shuffle();
+		players = new ArrayList<>();
+		dealerHand = new ArrayList<>();
 
-        status  = TableStatus.DEALING;
-    }
+		status = TableStatus.WAITING_ON_PLAYER;
+		playerTurn = 1;
+	}
 
-    public void play(){
-        while(isPlaying) {
-        	
-            switch (status) {
-                case DEALING:
-                    dealCards();
-                    break;
+	public void play() {
+		while (isPlaying) {
 
-                case DEALER_TURN:
-                    dealerPlays();
-                    break;
+			switch (status) {
+			case DEALING:
+				playerTurn = 0;
+				dealCards();
+				break;
 
-                case WAITING_ON_1:
-                    break;
-                case WAITING_ON_2:
-                    break;
-                case WAITING_ON_3:
-                    break;
-                case WAITING_ON_4:
-                    break;
-                case WAITING_ON_5:
-                    break;
-                case WAITING_ON_6:
-                    break;
-                case WAITING_ON_CHECKIN:
-                    break;
-                default:
-                    break;
-            }
-            
-            if(n_players < 1) {
-            	isPlaying = false;
-            }
-        }
+			case DEALER_TURN:
+				playerTurn = 0;
+				dealerPlays();
+				break;
 
-        close();
-    }
+			case WAITING_ON_PLAYER:
+				break;
+//			case WAITING_ON_2:
+//				playerTurn = 2;
+//				break;
+//			case WAITING_ON_3:
+//				playerTurn = 3;
+//				break;
+//			case WAITING_ON_4:
+//				playerTurn = 4;
+//				break;
+//			case WAITING_ON_5:
+//				playerTurn = 5;
+//				break;
+//			case WAITING_ON_6:
+//				playerTurn = 6;
+//				break;
+			case WAITING_ON_CHECKIN:
+				playerTurn = 0;
+				break;
+			default:
+				playerTurn = 0;
+				break;
+			}
 
-    /* Returns the value of a given hand list */
-    static int getValue(ArrayList<Card> hand){
-        int value = 0;
-        int nAces = 0;
+			if (n_players < 1) {
+				isPlaying = false;
+			}
+		}
 
-        for(Card c : hand){
-            int cv = c.getValue();
-            if(cv > 0){
-                value += cv;
-            } else if(cv == -1){
-                nAces++;
-            }
-        }
+		close();
+	}
 
-        for(int i = 0; i < nAces; i++){
-            if(value > 10){
-                value += 1;
-            } else {
-                value += 11;
-            }
-        }
+	/* Returns the value of a given hand list */
+	static int getValue(ArrayList<Card> hand) {
+		int value = 0;
+		int nAces = 0;
 
-        return value;
-    }
+		for (Card c : hand) {
+			int cv = c.getValue();
+			if (cv > 0) {
+				value += cv;
+			} else if (cv == -1) {
+				nAces++;
+			}
+		}
 
-    /* Dealer deals to himself */
-    private void dealerPlays(){
-        dealerHand.add(hiddenCard);
+		for (int i = 0; i < nAces; i++) {
+			if (value > 10) {
+				value += 1;
+			} else {
+				value += 11;
+			}
+		}
 
-        boolean flag = false;
+		return value;
+	}
 
-        while(!flag){
-            int val = getValue(dealerHand);
-            if(val < 17) {
-                dealerHand.add(deal());
-                if(dealerHand.get(dealerHand.size() - 1).getValue() == -1){
-                    isSoft = true;
-                }
-            } else if(val == 17 && isSoft){
-                dealerHand.add(deal());
-            } else {
-                // stand
-            	// TODO: win / loss logic
-            }
-        }
+	/* Dealer deals to himself */
+	private void dealerPlays() {
+		dealerHand.add(hiddenCard);
 
-        status = TableStatus.WAITING_ON_CHECKIN;
-    }
+		boolean flag = false;
 
-    private Card deal(){
-        Card c = shoe.drawCard();
-        if (c.getName().equals("CutCard")) {
-            shuffleNext = true;
-            c = shoe.drawAfterCutCard();
-        }
-        return c;
-    }
+		while (!flag) {
+			int val = getValue(dealerHand);
+			if (val < 17) {
+				dealerHand.add(deal());
+				if (dealerHand.get(dealerHand.size() - 1).getValue() == -1) {
+					isSoft = true;
+				}
+			} else if (val == 17 && isSoft) {
+				dealerHand.add(deal());
+			} else {
+				// stand
+				flag = true;
+				// TODO: win / loss logic
+			}
+		}
 
-    /* Players check in here */
-    public void checkIn(int playerId){
-        if(status == TableStatus.WAITING_ON_CHECKIN || status == TableStatus.WAITING_ON_BETS){
-            for(Player p : players){
-                if(p.getPlayerID() == playerId){
-                    p.checkedIn = true;
-                    n_CheckedIn++;
-                }
-            }
-            if(n_CheckedIn == n_players){
-                n_CheckedIn = 0;
-                if(status == TableStatus.WAITING_ON_CHECKIN){
-                    status = TableStatus.WAITING_ON_BETS;
-                } else {
-                    status = TableStatus.DEALING;
-                }
-            }
-        } else {
-            // TODO: switch player, look at their status
-        }
-    }
+		status = TableStatus.WAITING_ON_CHECKIN;
+	}
 
-    /*
-        Returns the Dealer's hand
-     */
-    public List<Card> getDealerHand(){
-        return dealerHand;
-    }
+	private Card deal() {
+		Card c = shoe.drawCard();
+		if (c.getName().equals("CutCard")) {
+			shuffleNext = true;
+			c = shoe.drawAfterCutCard();
+		}
+		return c;
+	}
 
-    /*
-        Add players to the table
-     */
-    public boolean addPlayer(Player p){
-        if(n_players < N_SEATS) {
-            players.add(p);
-            System.out.println("Added player to Table " + this.tableID);
-            
-            // Start the table if it isn't started already
-            if(!isPlaying){
-            	isPlaying = true;
-            	p.setStatus(PlayerStatus.WAITING_ON_BET);
-            	play();
-            }
-            
-            return true;
-        }
-        return false;
-    }
+	/* Players check in here */
+	public void checkIn(int playerId, PlayerAction pa, int bet) {
+		if ((status == TableStatus.WAITING_ON_CHECKIN && pa == PlayerAction.READY)
+				|| (status == TableStatus.WAITING_ON_BETS && bet > 0)) {
+			if(pa == PlayerAction.BET){
+				playerUpdate(playerId, pa, bet);
+			}
+			for (Player p : players) {
+				if (p.getPlayerID() == playerId) {
+					p.checkedIn = true;
+					n_CheckedIn++;
+				}
+			}
+			if (n_CheckedIn == n_players) {
+				n_CheckedIn = 0;
+				if (status == TableStatus.WAITING_ON_CHECKIN) {
+					status = TableStatus.WAITING_ON_BETS;
+				} else {
+					status = TableStatus.DEALING;
+				}
+			}
+		} else {
+			playerUpdate(playerId, pa, bet);
+		}
+	}
 
-    public int getTableID(){
-        return tableID;
-    }
+	/* Sends update to player */
+	public void playerUpdate(int playerId, PlayerAction pa, int bet) {
+		for (Player p : players) {
+			if (p.getPlayerID() == playerId) {
+				if (playerTurn == playerId) {
+					switch (pa) {
+					case BET:
+						p.setBet(bet);
+						break;
+					case HIT:
+						p.dealCard(deal());
+						break;
+					case STAND:
+						playerTurn++;
+						break;
+					case UPDATE:
+						break;
+					default:
+						break;
+					}
+				} else {
 
-    /*
-     * Deal the first, starting hand to all players
-     */
-    private void dealCards(){
-        if(shuffleNext){
-        	shoe.shuffle();
-        	shuffleNext = false;
-        }
-        
-        dealerHand.clear();
+				}
+			}
+		}
 
-        for(Player p : players){
-            p.clearHand();
-            p.checkedIn = false;
-        }
+	}
 
-        n_CheckedIn = 0;
+	/*
+	 * Returns the Dealer's hand
+	 */
+	public List<Card> getDealerHand() {
+		return dealerHand;
+	}
 
-        for (int i = 0; i < 2; i++) {
-            for (Player p : players) {
-                p.dealCard(shoe.drawCard());
-            }
+	/*
+	 * Add players to the table
+	 */
+	public boolean addPlayer(Player p) {
+		if (n_players < N_SEATS) {
+			players.add(p);
+			System.out.println("Added player to Table " + this.tableID);
 
-            if (i == 0) {
-                dealerHand.add(shoe.drawCard());
-            } else {
-                hiddenCard = shoe.drawCard();
-            }
-        }
-    }
+			// Start the table if it isn't started already
+			if (!isPlaying) {
+				isPlaying = true;
+				p.setStatus(PlayerStatus.WAITING_ON_BET);
+				play();
+			} else {
+				p.setStatus(PlayerStatus.NEW_PLAYER);
+			}
 
-    /*
-        Closes the table
-     */
-    private void close(){
-        shoe.shuffle();
-        dealerHand.clear();
-    }
+			return true;
+		}
+		return false;
+	}
 
-    /*
-    public boolean isFull(){
-        return full;
-    }
-    */
+	public int getTableID() {
+		return tableID;
+	}
+
+	/*
+	 * Deal the first, starting hand to all players
+	 */
+	private void dealCards() {
+		if (shuffleNext) {
+			shoe.shuffle();
+			shuffleNext = false;
+		}
+
+		dealerHand.clear();
+
+		for (Player p : players) {
+			p.clearHand();
+			p.checkedIn = false;
+		}
+
+		n_CheckedIn = 0;
+
+		for (int i = 0; i < 2; i++) {
+			for (Player p : players) {
+				if (!(p.getStatus() == PlayerStatus.NEW_PLAYER)) {
+					p.dealCard(shoe.drawCard());
+				}
+			}
+
+			if (i == 0) {
+				dealerHand.add(shoe.drawCard());
+			} else {
+				hiddenCard = shoe.drawCard();
+			}
+		}
+		
+		status = TableStatus.WAITING_ON_PLAYER;
+		playerTurn = 1;
+	}
+
+	/*
+	 * Closes the table
+	 */
+	private void close() {
+		shoe.shuffle();
+		dealerHand.clear();
+	}
+
+	/*
+	 * public boolean isFull(){ return full; }
+	 */
+	
+	/* Returns true if the player is at the table */
+	public boolean hasPlayer(int playerId){
+		for(Player p : players){
+			if(p.getPlayerID() == playerId){
+				return true;
+			}
+		}
+		return false;
+	}
 }

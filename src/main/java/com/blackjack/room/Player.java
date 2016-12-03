@@ -14,6 +14,7 @@ public class Player {
     private ArrayList<Card> hand;
     private int handValue = 0;
     private PlayerStatus status = PlayerStatus.NEW_PLAYER;
+    private int currentBet = 0;
 
     // Public
     public boolean checkedIn = false;
@@ -50,6 +51,14 @@ public class Player {
     
     public PlayerStatus getStatus(){
     	return status;
+    }
+    
+    public int getBet(){
+    	return currentBet;
+    }
+    
+    public void setBet(int bet){
+    	currentBet = bet;
     }
     
 }

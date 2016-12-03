@@ -3,7 +3,6 @@ package com.blackjack.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.annotation.PostConstruct;
 
@@ -13,8 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.blackjack.model.JoinModel;
 import com.blackjack.room.Player;
 import com.blackjack.room.Table;
+import com.blackjack.status.PlayerAction;
 
 /**
  * Created by posid on 11/20/2016
@@ -48,16 +49,27 @@ public class BlackJackServer {
         }
     }
 
-    public int addPlayer(){
+    public void update(int playerId, PlayerAction pa, int bet){
+    	for(Table t : tables){
+    		if(t.hasPlayer(playerId)){
+    			t.playerUpdate(playerId, pa, bet);
+    		}
+    	}
+    }
+    
+    public JoinModel addPlayer(){
         Player p = new Player(++playerID);
+        JoinModel jm;
         for(Table t : tables){
             if(t.addPlayer(p)){
-                return p.getPlayerID();
+            	 jm = new JoinModel(p, t);
+            	 return jm;
             }
         }
         addTables(1);
         tables.get(tables.size() - 1).addPlayer(p);
-        return p.getPlayerID();
+        jm = new JoinModel(p, tables.get(tables.size() -1));
+        return jm;
     }
 
     @PostConstruct

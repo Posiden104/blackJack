@@ -1,6 +1,6 @@
 package com.blackjack.status;
 
-public enum PlayerActions {
+public enum PlayerAction {
 	// Player bet
 	BET,
 	
@@ -8,5 +8,11 @@ public enum PlayerActions {
 	HIT,
 	
 	// Player stands
-	STAND
+	STAND,
+	
+	// Player needs update
+	UPDATE,
+	
+	// Player is ready for next round
+	READY
 }
