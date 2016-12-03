@@ -1,5 +1,6 @@
 package com.blackjack.room;
 
+import com.blackjack.status.PlayerStatus;
 import com.blackjack.status.TableStatus;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public class Table {
 
+	// Private
     private final int N_SEATS = 6;
 
     private int tableID;
@@ -19,6 +21,7 @@ public class Table {
     //private boolean showDealerHand = false;
     private boolean shuffleNext = false;
     private boolean isSoft = false;
+    
 
     private Shoe shoe;
     private TableStatus status;
@@ -26,6 +29,9 @@ public class Table {
     private ArrayList<Card> dealerHand;
     private Card hiddenCard;
 
+    // Public
+    public boolean isPlaying = false;
+    
 
     public Table(int tableID){
         this.tableID = tableID;
@@ -38,7 +44,7 @@ public class Table {
     }
 
     public void play(){
-        while(n_players > 0) {
+        while(isPlaying) {
 
             switch (status) {
                 case DEALING:
@@ -65,6 +71,10 @@ public class Table {
                     break;
                 default:
                     break;
+            }
+            
+            if(n_players < 1) {
+            	isPlaying = false;
             }
         }
 
@@ -164,7 +174,15 @@ public class Table {
     public boolean addPlayer(Player p){
         if(n_players < N_SEATS) {
             players.add(p);
-            System.out.println("Added player to " + this.tableID);
+            System.out.println("Added player to Table " + this.tableID);
+            
+            // Start the table if it isn't started already
+            if(!isPlaying){
+            	isPlaying = true;
+            	p.setStatus(PlayerStatus.WAITING_ON_BET);
+            	play();
+            }
+            
             return true;
         }
         return false;
