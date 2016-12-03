@@ -1,4 +1,4 @@
-package com.blackjack.API;
+package com.blackjack.controller;
 
 import com.blackjack.service.BlackJackServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class Controller {
     /* used for new players */
     @RequestMapping("/blackjack/v1.0/join")
     public String addPlayer(){
-        Vector v;
+        Vector<Integer> v;
         v = bjs.addPlayer();
         return v.toString();
     }

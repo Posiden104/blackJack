@@ -164,6 +164,7 @@ public class Table {
     public boolean addPlayer(Player p){
         if(n_players < N_SEATS) {
             players.add(p);
+            System.out.println("Added player to " + this.tableID);
             return true;
         }
         return false;
