@@ -18,7 +18,6 @@ public class Table {
     private int n_players = 0;
     private int n_CheckedIn = 0;
 
-    //private boolean showDealerHand = false;
     private boolean shuffleNext = false;
     private boolean isSoft = false;
     
@@ -45,7 +44,7 @@ public class Table {
 
     public void play(){
         while(isPlaying) {
-
+        	
             switch (status) {
                 case DEALING:
                     dealCards();
@@ -108,7 +107,6 @@ public class Table {
 
     /* Dealer deals to himself */
     private void dealerPlays(){
-        //showDealerHand = true;
         dealerHand.add(hiddenCard);
 
         boolean flag = false;
@@ -124,6 +122,7 @@ public class Table {
                 dealerHand.add(deal());
             } else {
                 // stand
+            	// TODO: win / loss logic
             }
         }
 
@@ -196,10 +195,12 @@ public class Table {
      * Deal the first, starting hand to all players
      */
     private void dealCards(){
-        shoe.shuffle();
-        shuffleNext = false;
+        if(shuffleNext){
+        	shoe.shuffle();
+        	shuffleNext = false;
+        }
+        
         dealerHand.clear();
-        //showDealerHand = false;
 
         for(Player p : players){
             p.clearHand();

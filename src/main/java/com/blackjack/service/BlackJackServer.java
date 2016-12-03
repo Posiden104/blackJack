@@ -48,22 +48,16 @@ public class BlackJackServer {
         }
     }
 
-    public Vector<Integer> addPlayer(){
+    public int addPlayer(){
         Player p = new Player(++playerID);
-        Vector<Integer> v = new Vector<Integer>();
         for(Table t : tables){
             if(t.addPlayer(p)){
-                v.add(0, p.getPlayerID());
-                v.add(1 , t.getTableID());
-                return v;
+                return p.getPlayerID();
             }
         }
         addTables(1);
         tables.get(tables.size() - 1).addPlayer(p);
-        v.add(0, p.getPlayerID());
-        v.add(1, tables.get(tables.size() -1).getTableID());
-
-        return v;
+        return p.getPlayerID();
     }
 
     @PostConstruct
