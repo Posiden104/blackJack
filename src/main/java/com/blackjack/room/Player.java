@@ -9,11 +9,14 @@ import java.util.ArrayList;
  * Created by posid on 11/20/2016
  */
 public class Player {
-    private int playerID;
+    // Private
+	private int playerID;
     private ArrayList<Card> hand;
     private int handValue = 0;
+    private PlayerStatus status = PlayerStatus.NEW_PLAYER;
+
+    // Public
     public boolean checkedIn = false;
-    PlayerStatus status = PlayerStatus.RECALL;
 
     public Player(int id){
         playerID = id;
@@ -37,7 +40,16 @@ public class Player {
         return handValue;
     }
 
-    void clearHand() {
+    public void clearHand() {
         hand.clear();
     }
+    
+    public void setStatus(PlayerStatus s){
+    	status = s;
+    }
+    
+    public PlayerStatus getStatus(){
+    	return status;
+    }
+    
 }

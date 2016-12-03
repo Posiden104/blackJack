@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import com.blackjack.room.Player;
-import com.blackjack.room.Table;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan;
+
+import com.blackjack.room.Player;
+import com.blackjack.room.Table;
 
 /**
  * Created by posid on 11/20/2016
@@ -26,7 +29,7 @@ public class BlackJackServer {
  
     
     @Autowired
-    private static BlackJackServer bjs;
+    public BlackJackServer bjs;
 
     public BlackJackServer(){
         tables = new ArrayList<>();
@@ -63,10 +66,13 @@ public class BlackJackServer {
         return v;
     }
 
-    public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(BlackJackServer.class, args);
-
+    @PostConstruct
+    public void init(){
         bjs = new BlackJackServer();
         bjs.addTables(0);
+    }
+    
+    public static void main(String[] args) {
+        ApplicationContext ctx = SpringApplication.run(BlackJackServer.class, args);
     }
 }

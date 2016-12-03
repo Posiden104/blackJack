@@ -12,6 +12,9 @@ public enum PlayerStatus {
 
     // waiting on the player to choose an action
     WAITING_ON_ACTION,
+    
+    // player just joined the table, wait until the hand is finished
+    NEW_PLAYER,
 
     // other error, call status again
     RECALL

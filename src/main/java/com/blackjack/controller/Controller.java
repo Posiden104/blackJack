@@ -15,7 +15,7 @@ import java.util.Vector;
 public class Controller {
 
     @Autowired
-    static BlackJackServer bjs;
+    public BlackJackServer bjs;
 
     /* Index endpoint */
     @RequestMapping("/")
