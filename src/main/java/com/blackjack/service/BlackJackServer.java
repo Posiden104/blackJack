@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.*;
 
 /**
  * Created by posid on 11/20/2016
@@ -28,7 +28,7 @@ public class BlackJackServer {
     @Autowired
     private static BlackJackServer bjs;
 
-    private BlackJackServer(){
+    public BlackJackServer(){
         tables = new ArrayList<>();
         Table t = new Table(0);
         tables.add(t);
@@ -45,9 +45,9 @@ public class BlackJackServer {
         }
     }
 
-    public Vector addPlayer(){
+    public Vector<Integer> addPlayer(){
         Player p = new Player(++playerID);
-        Vector v = new Vector();
+        Vector<Integer> v = new Vector<Integer>();
         for(Table t : tables){
             if(t.addPlayer(p)){
                 v.add(0, p.getPlayerID());

@@ -26,7 +26,7 @@ class Card {
         this.name = name;
         this.name += suit;
         switch(name){
-            case "A":
+            case "Ace":
                 this.value = -1;
                 break;
             case "Jack":
