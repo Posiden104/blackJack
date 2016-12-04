@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blackjack.model.JSONModel;
+import com.blackjack.model.JoinModel;
 import com.blackjack.service.BlackJackServer;
 import com.blackjack.status.PlayerAction;
 
@@ -47,7 +48,7 @@ public class Controller {
 	/* used for new players */
 	
 	@RequestMapping("/blackjack/v1.0/join")
-	public JSONModel addPlayer() {
+	public JoinModel addPlayer() {
 		return bjs.addPlayer();
 	}
 	

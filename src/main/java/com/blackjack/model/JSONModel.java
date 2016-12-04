@@ -8,11 +8,11 @@ public class JSONModel {
 	// Private
 	
 	// Public
-	public Player player;
 	public Table table;
+	public int playerId;
 	
 	public JSONModel(Player p, Table t){
-		player = p;
 		table = t;
+		playerId = p.getPlayerID();
 	}
 }
