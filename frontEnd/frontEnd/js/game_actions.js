@@ -1,3 +1,5 @@
+var playerID;
+
 function parse(str) {
     var args = [].slice.call(arguments, 1),
         i = 0;
@@ -14,7 +16,7 @@ function Get(yourUrl){
     return Httpreq.responseText;          
 }
 
-var player_hit = function(playerID) {
+var player_hit = function() {
 
     var uri = parse(/blackjack/v1.0/%s/HIT, playerID);
 
@@ -35,7 +37,7 @@ var player_hit = function(playerID) {
     };
 }
 
-var player_stay = function(playerID) {
+var player_stay = function() {
 
     var uri = parse(/blackjack/v1.0/%s/STAY, playerID);
 
@@ -53,7 +55,7 @@ var player_stay = function(playerID) {
     };
 }
 
-var player_bet = function(playerID, bet) {
+var player_bet = function(bet) {
 
     var uri = parse(/blackjack/v1.0/%s/BET/, playerID)
     uri.concat(bet)
@@ -74,19 +76,15 @@ var player_bet = function(playerID, bet) {
     };
 }
 
-var player_join = function(playerID) {
+var player_join = function() {
 
     var uri = '/blackjack/v1.0/join'
 
     var json_obj = JSON.parse(Get(uri));
-    var playerID = json_obj['player'].playerID;
-
-    return {
-        current_player: playerID
-    };
+    playerID = json_obj['player'].playerID;
 }
 
-var player_leave = function(playerID) {
+var player_leave = function() {
 
     var uri = parse(/blackjack/v1.0/%s/leave, playerID);
     
