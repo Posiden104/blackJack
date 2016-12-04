@@ -1,5 +1,10 @@
+
 var message = '';
-var playerName = "ThisGuy";
+var playerName = "SomeGuy";
+
+if(player.playerID == 1) {
+	playerName = "Player 1";
+}
 var playerScore = "100";
 var playerBet = "$100.00";
 
