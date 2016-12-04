@@ -11,10 +11,11 @@ import java.util.ArrayList;
 public class Player {
     // Private
 	private int playerID;
-    private ArrayList<Card> hand;
-    private int handValue = 0;
+	private int handValue = 0;
+	private int currentBet = 0;
+
+	private ArrayList<Card> hand;
     private PlayerStatus status = PlayerStatus.NEW_PLAYER;
-    private int currentBet = 0;
 
     // Public
     public boolean checkedIn = false;

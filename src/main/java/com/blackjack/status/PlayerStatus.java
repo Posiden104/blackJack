@@ -20,5 +20,17 @@ public enum PlayerStatus {
     RECALL,
     
     // player is not at any table
-    NOT_SEATED
+    NOT_SEATED,
+    
+    // player won
+    WON,
+    
+    // player lost
+    LOST,
+    
+    // player busted
+    BUSTED,
+    
+    // player got blackjack
+    BLACKJACK
 }

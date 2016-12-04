@@ -33,15 +33,15 @@ public class Controller {
 	/* Request update */
 	@RequestMapping("/blackjack/v1.0/{playerId}/{action}")
 	public JSONModel update(@PathVariable int playerId, @PathVariable PlayerAction action) {
+		System.out.println("player action");
 		return bjs.update(playerId, action, 0);
 	}
 
 	/* Place bets */
 	@RequestMapping("/blackjack/v1.0/{playerId}/BET/{ammount}")
-	public String bet(@PathVariable int playerId, @PathVariable int ammount) {
+	public JSONModel bet(@PathVariable int playerId, @PathVariable int ammount) {
 		//System.err.println("player " + playerId + " is betting $" + ammount);
-		bjs.update(playerId, PlayerAction.BET, ammount);
-		return " " + playerId + " $" + ammount;
+		return bjs.update(playerId, PlayerAction.BET, ammount);
 	}
 
 	/* used for new players */
@@ -50,5 +50,19 @@ public class Controller {
 	public JSONModel addPlayer() {
 		return bjs.addPlayer();
 	}
+	
+	/* player leaves table */
+	@RequestMapping("/blackjack/v1.0/{playerId}/leave")
+	public void leave(@PathVariable int playerId){
+		System.out.println("player leave");
+		bjs.removePlayer(playerId);
+	}
 
+	/* shuts down the server */
+	@RequestMapping("/shutdown")
+	public String shutdown(){
+		bjs.shutdown();
+		return "server shutdown.";
+	}
+	
 }

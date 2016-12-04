@@ -1,16 +1,16 @@
 package com.blackjack.room;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blackjack.status.PlayerAction;
 import com.blackjack.status.PlayerStatus;
 import com.blackjack.status.TableStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by posid on 11/20/2016
  */
-public class Table {
+public class Table implements Runnable {
 
 	// Private
 	private final int N_SEATS = 6;
@@ -22,6 +22,8 @@ public class Table {
 
 	private boolean shuffleNext = false;
 	private boolean isSoft = false;
+	private boolean isClosed = false;
+	private boolean running = true;
 
 	private Shoe shoe;
 	private TableStatus status;
@@ -39,55 +41,68 @@ public class Table {
 		players = new ArrayList<>();
 		dealerHand = new ArrayList<>();
 
-		status = TableStatus.WAITING_ON_PLAYER;
-		playerTurn = 1;
+		status = TableStatus.WAITING_ON_BETS;
+		playerTurn = 0;
 	}
 
-	public void play() {
-		while (isPlaying) {
-
-			switch (status) {
-			case DEALING:
-				playerTurn = 0;
-				dealCards();
-				break;
-
-			case DEALER_TURN:
-				playerTurn = 0;
-				dealerPlays();
-				break;
-
-			case WAITING_ON_PLAYER:
-				break;
-			// case WAITING_ON_2:
-			// playerTurn = 2;
-			// break;
-			// case WAITING_ON_3:
-			// playerTurn = 3;
-			// break;
-			// case WAITING_ON_4:
-			// playerTurn = 4;
-			// break;
-			// case WAITING_ON_5:
-			// playerTurn = 5;
-			// break;
-			// case WAITING_ON_6:
-			// playerTurn = 6;
-			// break;
-			case WAITING_ON_CHECKIN:
-				playerTurn = 0;
-				break;
-			default:
-				playerTurn = 0;
-				break;
-			}
-
+	/* Main loop for the table */
+	public void run() {
+		while (running) {
 			if (n_players < 1) {
-				isPlaying = false;
+				if (!isClosed) {
+					close();
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// e.printStackTrace();
+				}
+			} else {
+
+				switch (status) {
+				case DEALING:
+					playerTurn = 0;
+					dealCards();
+					break;
+
+				case DEALER_TURN:
+					playerTurn = 0;
+					dealerPlays();
+					break;
+
+				case WAITING_ON_PLAYER:
+					if (playerTurn > 6) {
+						status = TableStatus.DEALER_TURN;
+					} else {
+						players.get(playerTurn).setStatus(PlayerStatus.WAITING_ON_ACTION);
+					}
+					break;
+
+				case WAITING_ON_CHECKIN:
+					playerTurn = 0;
+					break;
+
+				case WAITING_ON_BETS:
+					playerTurn = 0;
+					break;
+
+				default:
+					playerTurn = 0;
+					break;
+				}
+
+				if (n_players < 1) {
+					isPlaying = false;
+				}
+
+				// wait 1/4 second to re-run loop
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					// e.printStackTrace();
+				}
 			}
 		}
-
-		close();
 	}
 
 	/* Returns the value of a given hand list */
@@ -152,9 +167,13 @@ public class Table {
 	public void update(int playerId, PlayerAction pa, int bet) {
 		Player p = getPlayer(playerId);
 
+		System.err.println("updating player " + playerId);
+
 		switch (pa) {
 		case BET:
-			placeBet(p, bet);
+			if (status == TableStatus.WAITING_ON_BETS) {
+				placeBet(p, bet);
+			}
 			break;
 
 		case HIT:
@@ -197,12 +216,24 @@ public class Table {
 	}
 
 	/* Places bet for player and checks if any players still need to bet */
-	public void placeBet(Player p, int bet){
+	public void placeBet(Player p, int bet) {
+		System.err.println("Player bet " + bet);
 		p.setBet(bet);
 		p.setStatus(PlayerStatus.WAITING_ON_OTHER_PLAYER);
-		
+
+		// check if all players have bets in
+		if (!p.checkedIn) {
+			System.out.println("Player " + p.getPlayerID() + "'s status is " + p.getStatus());
+			p.checkedIn = true;
+			n_CheckedIn++;
+		}
+
+		if (n_CheckedIn == n_players) {
+			n_CheckedIn = 0;
+			status = TableStatus.DEALING;
+		}
 	}
-	
+
 	/* Sends update to player */
 	public void playerUpdate(int playerId, PlayerAction pa, int bet) {
 		Player p = getPlayer(playerId);
@@ -227,15 +258,19 @@ public class Table {
 	public boolean addPlayer(Player p) {
 		if (n_players < N_SEATS) {
 			players.add(p);
+			n_players++;
 			System.out.println("Added player " + p.getPlayerID() + " to Table " + this.tableID);
 
 			// Start the table if it isn't started already
 			if (!isPlaying) {
 				isPlaying = true;
 				p.setStatus(PlayerStatus.WAITING_ON_BET);
-				play();
 			} else {
-				p.setStatus(PlayerStatus.NEW_PLAYER);
+				if (status == TableStatus.WAITING_ON_BETS) {
+					p.setStatus(PlayerStatus.WAITING_ON_BET);
+				} else {
+					p.setStatus(PlayerStatus.NEW_PLAYER);
+				}
 			}
 
 			return true;
@@ -289,6 +324,7 @@ public class Table {
 	private void close() {
 		shoe.shuffle();
 		clearTable();
+		isClosed = true;
 	}
 
 	/* Clears all cards from table */
@@ -318,6 +354,19 @@ public class Table {
 
 	public boolean isShuffleNext() {
 		return shuffleNext;
+	}
+
+	public void removePlayer(Player p) {
+		players.remove(p);
+		n_players--;
+	}
+
+	public TableStatus getStatus() {
+		return status;
+	}
+
+	public void shutdown() {
+		running = false;
 	}
 
 }
