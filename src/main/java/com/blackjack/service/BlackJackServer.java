@@ -12,10 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.blackjack.model.JoinModel;
+import com.blackjack.model.JSONModel;
 import com.blackjack.room.Player;
 import com.blackjack.room.Table;
 import com.blackjack.status.PlayerAction;
+import com.blackjack.status.PlayerStatus;
 
 /**
  * Created by posid on 11/20/2016
@@ -49,26 +50,33 @@ public class BlackJackServer {
         }
     }
 
-    public void update(int playerId, PlayerAction pa, int bet){
+    public JSONModel update(int playerId, PlayerAction pa, int bet){
+    	Player p;
     	for(Table t : tables){
-    		if(t.hasPlayer(playerId)){
+    		p = t.getPlayer(playerId);
+    		if(p.getPlayerID() == playerId){
     			t.playerUpdate(playerId, pa, bet);
+    			JSONModel jm = new JSONModel(p, t);
+    			return jm;
     		}
     	}
+    	p = new Player(-1);
+    	p.setStatus(PlayerStatus.NOT_SEATED);
+    	return new JSONModel(p, new Table(-1));
     }
     
-    public JoinModel addPlayer(){
+    public JSONModel addPlayer(){
         Player p = new Player(++playerID);
-        JoinModel jm;
+        JSONModel jm;
         for(Table t : tables){
             if(t.addPlayer(p)){
-            	 jm = new JoinModel(p, t);
+            	 jm = new JSONModel(p, t);
             	 return jm;
             }
         }
         addTables(1);
         tables.get(tables.size() - 1).addPlayer(p);
-        jm = new JoinModel(p, tables.get(tables.size() -1));
+        jm = new JSONModel(p, tables.get(tables.size() -1));
         return jm;
     }
 

@@ -3,7 +3,7 @@ package com.blackjack.model;
 import com.blackjack.room.Player;
 import com.blackjack.room.Table;
 
-public class JoinModel {
+public class JSONModel {
 
 	// Private
 	
@@ -11,7 +11,7 @@ public class JoinModel {
 	public Player player;
 	public Table table;
 	
-	public JoinModel(Player p, Table t){
+	public JSONModel(Player p, Table t){
 		player = p;
 		table = t;
 	}

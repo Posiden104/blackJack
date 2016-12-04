@@ -17,5 +17,8 @@ public enum PlayerStatus {
     NEW_PLAYER,
 
     // other error, call status again
-    RECALL
+    RECALL,
+    
+    // player is not at any table
+    NOT_SEATED
 }

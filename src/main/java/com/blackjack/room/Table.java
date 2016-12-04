@@ -25,7 +25,7 @@ public class Table {
 
 	private Shoe shoe;
 	private TableStatus status;
-	private List<Player> players;
+	private ArrayList<Player> players;
 	private ArrayList<Card> dealerHand;
 	private Card hiddenCard;
 
@@ -59,21 +59,21 @@ public class Table {
 
 			case WAITING_ON_PLAYER:
 				break;
-//			case WAITING_ON_2:
-//				playerTurn = 2;
-//				break;
-//			case WAITING_ON_3:
-//				playerTurn = 3;
-//				break;
-//			case WAITING_ON_4:
-//				playerTurn = 4;
-//				break;
-//			case WAITING_ON_5:
-//				playerTurn = 5;
-//				break;
-//			case WAITING_ON_6:
-//				playerTurn = 6;
-//				break;
+			// case WAITING_ON_2:
+			// playerTurn = 2;
+			// break;
+			// case WAITING_ON_3:
+			// playerTurn = 3;
+			// break;
+			// case WAITING_ON_4:
+			// playerTurn = 4;
+			// break;
+			// case WAITING_ON_5:
+			// playerTurn = 5;
+			// break;
+			// case WAITING_ON_6:
+			// playerTurn = 6;
+			// break;
 			case WAITING_ON_CHECKIN:
 				playerTurn = 0;
 				break;
@@ -149,58 +149,69 @@ public class Table {
 		return c;
 	}
 
-	/* Players check in here */
-	public void checkIn(int playerId, PlayerAction pa, int bet) {
-		if ((status == TableStatus.WAITING_ON_CHECKIN && pa == PlayerAction.READY)
-				|| (status == TableStatus.WAITING_ON_BETS && bet > 0)) {
-			if(pa == PlayerAction.BET){
-				playerUpdate(playerId, pa, bet);
-			}
-			for (Player p : players) {
-				if (p.getPlayerID() == playerId) {
-					p.checkedIn = true;
-					n_CheckedIn++;
-				}
-			}
-			if (n_CheckedIn == n_players) {
-				n_CheckedIn = 0;
-				if (status == TableStatus.WAITING_ON_CHECKIN) {
-					status = TableStatus.WAITING_ON_BETS;
-				} else {
-					status = TableStatus.DEALING;
-				}
-			}
-		} else {
-			playerUpdate(playerId, pa, bet);
+	public void update(int playerId, PlayerAction pa, int bet) {
+		Player p = getPlayer(playerId);
+
+		switch (pa) {
+		case BET:
+			placeBet(p, bet);
+			break;
+
+		case HIT:
+			p.dealCard(deal());
+			p.setStatus(PlayerStatus.WAITING_ON_ACTION);
+			break;
+
+		case STAND:
+			playerTurn++;
+			p.setStatus(PlayerStatus.WAITING_ON_OTHER_PLAYER);
+			break;
+
+		case UPDATE:
+			break;
+
+		case READY:
+			checkIn(p);
+			break;
+
+		default:
+			break;
 		}
 	}
 
-	/* Sends update to player */
-	public void playerUpdate(int playerId, PlayerAction pa, int bet) {
-		for (Player p : players) {
-			if (p.getPlayerID() == playerId) {
-				if (playerTurn == playerId) {
-					switch (pa) {
-					case BET:
-						p.setBet(bet);
-						break;
-					case HIT:
-						p.dealCard(deal());
-						break;
-					case STAND:
-						playerTurn++;
-						break;
-					case UPDATE:
-						break;
-					default:
-						break;
-					}
-				} else {
+	/* Players check in here */
+	public void checkIn(Player p) {
+		if (status == TableStatus.WAITING_ON_CHECKIN) {
+			if (!p.checkedIn) {
+				System.out.println("Player " + p.getPlayerID() + "'s status is " + p.getStatus());
+				p.checkedIn = true;
+				n_CheckedIn++;
+			}
 
-				}
+			if (n_CheckedIn == n_players) {
+				n_CheckedIn = 0;
+				clearTable();
+				status = TableStatus.WAITING_ON_BETS;
 			}
 		}
+	}
 
+	/* Places bet for player and checks if any players still need to bet */
+	public void placeBet(Player p, int bet){
+		p.setBet(bet);
+		p.setStatus(PlayerStatus.WAITING_ON_OTHER_PLAYER);
+		
+	}
+	
+	/* Sends update to player */
+	public void playerUpdate(int playerId, PlayerAction pa, int bet) {
+		Player p = getPlayer(playerId);
+		if (playerTurn == playerId) {
+			// TODO: this method
+			p.getBet();
+		} else {
+
+		}
 	}
 
 	/*
@@ -216,7 +227,7 @@ public class Table {
 	public boolean addPlayer(Player p) {
 		if (n_players < N_SEATS) {
 			players.add(p);
-			System.out.println("Added player to Table " + this.tableID);
+			System.out.println("Added player " + p.getPlayerID() + " to Table " + this.tableID);
 
 			// Start the table if it isn't started already
 			if (!isPlaying) {
@@ -267,7 +278,7 @@ public class Table {
 				hiddenCard = shoe.drawCard();
 			}
 		}
-		
+
 		status = TableStatus.WAITING_ON_PLAYER;
 		playerTurn = 1;
 	}
@@ -277,20 +288,36 @@ public class Table {
 	 */
 	private void close() {
 		shoe.shuffle();
+		clearTable();
+	}
+
+	/* Clears all cards from table */
+	private void clearTable() {
+		for (Player p : players) {
+			p.clearHand();
+		}
 		dealerHand.clear();
 	}
 
 	/*
-	 * public boolean isFull(){ return full; }
+	 * Returns the player if the player is at the table otherwise returns a
+	 * player with playerId -1
 	 */
-	
-	/* Returns true if the player is at the table */
-	public boolean hasPlayer(int playerId){
-		for(Player p : players){
-			if(p.getPlayerID() == playerId){
-				return true;
+	public Player getPlayer(int playerId) {
+		for (Player p : players) {
+			if (p.getPlayerID() == playerId) {
+				return p;
 			}
 		}
-		return false;
+		return new Player(-1);
 	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public boolean isShuffleNext() {
+		return shuffleNext;
+	}
+
 }
