@@ -76,7 +76,7 @@ var player_bet = function(bet) {
     };
 }
 
-var player_join = function() {
+function player_join() {
 
     var uri = '/blackjack/v1.0/join'
 
