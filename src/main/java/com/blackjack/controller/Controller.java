@@ -1,12 +1,13 @@
 package com.blackjack.controller;
 
-import com.blackjack.service.BlackJackServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Vector;
+import com.blackjack.model.JSONModel;
+import com.blackjack.service.BlackJackServer;
+import com.blackjack.status.PlayerAction;
 
 /**
  * Created by posid on 11/20/2016
@@ -14,39 +15,54 @@ import java.util.Vector;
 @RestController
 public class Controller {
 
-    @Autowired
-    public BlackJackServer bjs;
+	@Autowired
+	public BlackJackServer bjs;
 
-    /* Index endpoint */
-    @RequestMapping("/")
-    public String index(){
-        return "BlackJackServer API index location.";
-    }
+	/* Index endpoint */
+	@RequestMapping("/")
+	public String index() {
+		return "BlackJackServer API index location.";
+	}
 
-    /* Test endpoint */
-    @RequestMapping("/testing")
-    public String testing(){
-        return "This is a test endpoint";
-    }
+	/* Test endpoint */
+	@RequestMapping("/testing")
+	public String testing() {
+		return "This is a test endpoint";
+	}
 
-    /* Request update */
-    @RequestMapping("/blackjack/v1.0/{playerId}/update")
-    public String update(@PathVariable String playerId){
-        return "" + playerId;
-    }
+	/* Request update */
+	@RequestMapping("/blackjack/v1.0/{playerId}/{action}")
+	public JSONModel update(@PathVariable int playerId, @PathVariable PlayerAction action) {
+		System.out.println("player action");
+		return bjs.update(playerId, action, 0);
+	}
 
-    /* Place bets */
-    @RequestMapping("/blackjack/v1.0/{playerId}/bet/{ammount}")
-    public String bet(@PathVariable String playerId, @PathVariable int bet){
-        return " " + playerId + bet;
-    }
+	/* Place bets */
+	@RequestMapping("/blackjack/v1.0/{playerId}/BET/{ammount}")
+	public JSONModel bet(@PathVariable int playerId, @PathVariable int ammount) {
+		//System.err.println("player " + playerId + " is betting $" + ammount);
+		return bjs.update(playerId, PlayerAction.BET, ammount);
+	}
 
-    /* used for new players */
-    @RequestMapping("/blackjack/v1.0/join")
-    public String addPlayer(){
-        Vector<Integer> v;
-        v = bjs.addPlayer();
-        return v.toString();
-    }
+	/* used for new players */
+	
+	@RequestMapping("/blackjack/v1.0/join")
+	public JSONModel addPlayer() {
+		return bjs.addPlayer();
+	}
+	
+	/* player leaves table */
+	@RequestMapping("/blackjack/v1.0/{playerId}/leave")
+	public void leave(@PathVariable int playerId){
+		System.out.println("player leave");
+		bjs.removePlayer(playerId);
+	}
 
+//	/* shuts down the server */
+//	@RequestMapping("/shutdown")
+//	public String shutdown(){
+//		bjs.shutdown();
+//		return "server shutdown.";
+//	}
+	
 }
