@@ -12,9 +12,10 @@
     
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/game_actions.js" type="text/javascript"></script>
 </head>
     
-<body>
+<body onload="player_join()">
     
     <div class="row">
         <div class="col-lg-1 col-md-1">
@@ -29,13 +30,7 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="playerspace">
                         <div class="panel panel-default">
-                            <div class="panel-body">Player 6</div>
-                            <div class="panel-score">21</div>
-                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
-                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
-                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
-                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
-                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                            <script src="js/write_p6.js"></script>
                         </div>
                         </div>
                     </div>
@@ -47,13 +42,7 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="playerspace">
                         <div class="panel panel-default">
-                            <div class="panel-body">Player 5</div>
-                            <div class="panel-score">21</div>
-                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
-                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
-                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
-                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
-                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                            <script src="js/write_p5.js"></script>
                         </div>
                         </div>
                     </div>
@@ -65,13 +54,7 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="playerspace">
                         <div class="panel panel-default">
-                            <div class="panel-body">Player 4</div>
-                            <div class="panel-score">21</div>
-                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
-                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
-                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
-                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
-                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                            <script src="js/write_p4.js"></script>
                         </div>
                         </div>
                     </div>
@@ -81,28 +64,21 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="playerspace">
                         <div class="panel panel-default">
-                            <div class="panel-body">Player 3</div>
-                            <div class="panel-score">21</div>
-                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
-                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
-                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
-                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
-                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                            <script src="js/write_p3.js"></script>
                         </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4">
+                        <div class="playerspace">
+                        <div class="panel panel-dealer">
+                            <script src="js/write_dealer.js"></script>
+                        </div> 
+                        </div>    
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="playerspace">
                         <div class="panel panel-default">
-                            <div class="panel-body">Player 2</div>
-                            <div class="panel-score">21</div>
-                            <img class="card1" src="pics/AC.png" class="img-thumbnail" alt="Card1">
-                             <img class="card2" src="pics/KC.png" class="img-thumbnail" alt="Card2">
-                             <img class="card3" src="pics/QC.png" class="img-thumbnail" alt="Card3">
-                             <img class="card4" src="pics/JC.png" class="img-thumbnail" alt="Card4">
-                             <img class="card5" src="pics/9C.png" class="img-thumbnail" alt="Card5">
+                            <script src="js/write_p2.js"></script>
                         </div>
                         </div>
                     </div>
@@ -125,11 +101,12 @@
                 
                 <div class="playbuttons">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary">Hit</button>
-                        <button type="button" class="btn btn-primary">Stay</button>
-                        <button type="button" class="btn btn-primary">Bet</button>
+                        <button type="button" class="btn btn-primary" onClick="player_hit()">Hit</button>
+                        <button type="button" class="btn btn-primary" onClick="player_stay()">Stay</button>
+                        <button type="button" class="btn btn-primary" onClick="player_bet()">Bet</button>
                         <button type="button" class="btn btn-primary">Increase Bet</button>
                         <button type="button" class="btn btn-primary">Decrease Bet</button>
+                        <button type="button" class="btn btn-primary">$100.00</button>
                     </div>
                 </div>
             </div>
@@ -137,13 +114,6 @@
         <div class="col-lg-1 col-md-1">
         </div>
     </div>
-    
-    
-    
-    
-    
-    
-    
     
 </body>
 </html>
