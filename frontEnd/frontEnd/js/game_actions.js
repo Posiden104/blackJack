@@ -74,6 +74,23 @@ var player_bet = function(playerID, bet) {
     };
 }
 
+var player_join = function(playerID) {
+
+    var uri = '/blackjack/v1.0/join'
+
+    var json_obj = JSON.parse(Get(uri));
+    var playerID = json_obj['player'].playerID;
+
+    return {
+        current_player: playerID
+    };
+}
+
+var player_leave = function(playerID) {
+
+    var uri = parse(/blackjack/v1.0/%s/leave, playerID);
+    
+}
 
 
 // function player_stay(playerID) {
