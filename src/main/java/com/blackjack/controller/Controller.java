@@ -58,11 +58,11 @@ public class Controller {
 		bjs.removePlayer(playerId);
 	}
 
-	/* shuts down the server */
-	@RequestMapping("/shutdown")
-	public String shutdown(){
-		bjs.shutdown();
-		return "server shutdown.";
-	}
+//	/* shuts down the server */
+//	@RequestMapping("/shutdown")
+//	public String shutdown(){
+//		bjs.shutdown();
+//		return "server shutdown.";
+//	}
 	
 }

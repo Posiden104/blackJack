@@ -1,7 +1,6 @@
 package com.blackjack.room;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.blackjack.status.PlayerAction;
 import com.blackjack.status.PlayerStatus;
@@ -18,7 +17,8 @@ public class Table implements Runnable {
 	private int tableID;
 	private int n_players = 0;
 	private int n_CheckedIn = 0;
-	private int playerTurn = 0;
+	private int playerTurn = -1;
+	private int dealerHandValue = 0;
 
 	private boolean shuffleNext = false;
 	private boolean isSoft = false;
@@ -42,7 +42,7 @@ public class Table implements Runnable {
 		dealerHand = new ArrayList<>();
 
 		status = TableStatus.WAITING_ON_BETS;
-		playerTurn = 0;
+		playerTurn = -1;
 	}
 
 	/* Main loop for the table */
@@ -61,33 +61,33 @@ public class Table implements Runnable {
 
 				switch (status) {
 				case DEALING:
-					playerTurn = 0;
-					dealCards();
+					playerTurn = -1;
+					startHand();
 					break;
 
 				case DEALER_TURN:
-					playerTurn = 0;
+					playerTurn = -1;
 					dealerPlays();
 					break;
 
 				case WAITING_ON_PLAYER:
-					if (playerTurn > 6) {
-						status = TableStatus.DEALER_TURN;
-					} else {
+					if (playerTurn < n_players) {
 						players.get(playerTurn).setStatus(PlayerStatus.WAITING_ON_ACTION);
+					} else {
+						status = TableStatus.DEALER_TURN;
 					}
 					break;
 
 				case WAITING_ON_CHECKIN:
-					playerTurn = 0;
+					playerTurn = -1;
 					break;
 
 				case WAITING_ON_BETS:
-					playerTurn = 0;
+					playerTurn = -1;
 					break;
 
 				default:
-					playerTurn = 0;
+					playerTurn = -1;
 					break;
 				}
 
@@ -148,11 +148,10 @@ public class Table implements Runnable {
 			} else {
 				// stand
 				flag = true;
-				// TODO: win / loss logic
 			}
 		}
 
-		status = TableStatus.WAITING_ON_CHECKIN;
+		calculateWin();
 	}
 
 	private Card deal() {
@@ -178,7 +177,11 @@ public class Table implements Runnable {
 
 		case HIT:
 			p.dealCard(deal());
-			p.setStatus(PlayerStatus.WAITING_ON_ACTION);
+			if (p.getHandValue() > 21) {
+				p.setStatus(PlayerStatus.BUSTED);
+			} else {
+				p.setStatus(PlayerStatus.WAITING_ON_ACTION);
+			}
 			break;
 
 		case STAND:
@@ -234,22 +237,16 @@ public class Table implements Runnable {
 		}
 	}
 
-	/* Sends update to player */
-	public void playerUpdate(int playerId, PlayerAction pa, int bet) {
-		Player p = getPlayer(playerId);
-		if (playerTurn == playerId) {
-			// TODO: this method
-			p.getBet();
-		} else {
-
-		}
-	}
-
 	/*
 	 * Returns the Dealer's hand
 	 */
-	public List<Card> getDealerHand() {
+	public ArrayList<Card> getDealerHand() {
 		return dealerHand;
+	}
+
+	public int getDealerHandValue() {
+		dealerHandValue = getValue(getDealerHand());
+		return dealerHandValue;
 	}
 
 	/*
@@ -278,6 +275,27 @@ public class Table implements Runnable {
 		return false;
 	}
 
+	public void calculateWin() {
+		int dValue = getDealerHandValue();
+		for (Player p : players) {
+			int value = p.getHandValue();
+			if (value > 21) {
+				p.setStatus(PlayerStatus.BUSTED);
+			} else if (value == 21 && p.getHand().size() == 2) {
+				p.setStatus(PlayerStatus.BLACKJACK);
+			} else if (value > dValue) {
+				p.setStatus(PlayerStatus.WON);
+			} else if (value < dValue) {
+				p.setStatus(PlayerStatus.LOST);
+			} else {
+				p.setStatus(PlayerStatus.NEED_READY);
+			}
+			p.updateMoney(p.getStatus());
+		}
+
+		status = TableStatus.WAITING_ON_CHECKIN;
+	}
+
 	public int getTableID() {
 		return tableID;
 	}
@@ -285,7 +303,7 @@ public class Table implements Runnable {
 	/*
 	 * Deal the first, starting hand to all players
 	 */
-	private void dealCards() {
+	private void startHand() {
 		if (shuffleNext) {
 			shoe.shuffle();
 			shuffleNext = false;
@@ -315,7 +333,7 @@ public class Table implements Runnable {
 		}
 
 		status = TableStatus.WAITING_ON_PLAYER;
-		playerTurn = 1;
+		playerTurn = 0;
 	}
 
 	/*
@@ -331,6 +349,8 @@ public class Table implements Runnable {
 	private void clearTable() {
 		for (Player p : players) {
 			p.clearHand();
+			p.setBet(0);
+			p.setStatus(PlayerStatus.WAITING_ON_BET);
 		}
 		dealerHand.clear();
 	}

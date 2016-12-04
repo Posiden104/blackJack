@@ -15,6 +15,9 @@ public enum PlayerStatus {
     
     // player just joined the table, wait until the hand is finished
     NEW_PLAYER,
+    
+    // player needs to acknowledge the results
+    NEED_READY,
 
     // other error, call status again
     RECALL,
