@@ -1,5 +1,4 @@
-function requestHit() {
-    
+function requestHit() {  
     //document.write("HIT");
 }
 
