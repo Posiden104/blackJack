@@ -3,16 +3,14 @@ package com.blackjack.model;
 import com.blackjack.room.Player;
 import com.blackjack.room.Table;
 
-public class JSONModel {
-
-	// Private
+public class JoinModel {
 	
 	// Public
-	public Table table;
 	public int playerId;
+	public Table table;
 	
-	public JSONModel(Player p, Table t){
-		table = t;
-		playerId = p.getPlayerID();
+	public JoinModel(Player p, Table t){
+		this.playerId = p.getPlayerID();
+		this.table = t;
 	}
 }

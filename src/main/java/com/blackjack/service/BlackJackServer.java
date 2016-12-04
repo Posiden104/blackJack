@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.blackjack.model.JSONModel;
+import com.blackjack.model.JoinModel;
 import com.blackjack.room.Player;
 import com.blackjack.room.Table;
 import com.blackjack.status.PlayerAction;
@@ -60,18 +61,18 @@ public class BlackJackServer {
 		return new JSONModel(p, new Table(-1));
 	}
 
-	public JSONModel addPlayer() {
+	public JoinModel addPlayer() {
 		Player p = new Player(++playerID);
-		JSONModel jm;
+		JoinModel jm;
 		for (Table t : tables) {
 			if (t.addPlayer(p)) {
-				jm = new JSONModel(p, t);
+				jm = new JoinModel(p, t);
 				return jm;
 			}
 		}
 		Table t = addTable();
 		t.addPlayer(p);
-		jm = new JSONModel(p, t);
+		jm = new JoinModel(p, t);
 		return jm;
 	}
 
