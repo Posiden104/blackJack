@@ -4,6 +4,7 @@ var interval = setInterval(gameLoop, 250);
 function gameLoop() {
     
     // call for JSON, get data
+    $.getJSON( "/blackjack/v1.0/join") 
     
     // update board (whose turn it is)
     // call write_p1 through p6, dealer, alert
