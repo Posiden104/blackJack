@@ -1,14 +1,15 @@
 var message = '';
 var playerName = "ThisGuy";
 var playerScore = "100";
+var playerBet = "$100.00";
 
-var playerHand = ["KC", "6C", "3C"];
+var playerHand = ["KD", "6H", "3S"];
 var cardNum = ["1", "2", "3", "4", "5"];
 var handSize = playerHand.length;
 
 //Check if Google is in the watchlist
 if (1) {
-    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + playerScore + '</div>';
+    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + playerScore + '</div><div class="panel-bet">' + playerBet + '</div>';
     
     for (i = 0; i < handSize; i++) {
         

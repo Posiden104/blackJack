@@ -11,8 +11,11 @@ import java.util.ArrayList;
 public class Player {
     // Private
 	private int playerID;
-    private ArrayList<Card> hand;
-    private int handValue = 0;
+	private int handValue = 0;
+	private int currentBet = 0;
+	private int money = 0;
+
+	private ArrayList<Card> hand;
     private PlayerStatus status = PlayerStatus.NEW_PLAYER;
 
     // Public
@@ -21,6 +24,7 @@ public class Player {
     public Player(int id){
         playerID = id;
         hand = new ArrayList<>();
+        money = 1000;
     }
 
     public ArrayList<Card> getHand(){
@@ -51,5 +55,38 @@ public class Player {
     public PlayerStatus getStatus(){
     	return status;
     }
+    
+    public int getBet(){
+    	return currentBet;
+    }
+    
+    public void setBet(int bet){
+    	currentBet = bet;
+    }
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void updateMoney(PlayerStatus ps) {
+		switch(ps){
+		case WON:
+			money += currentBet;
+			break;
+		
+		case BUSTED:
+		case LOST:
+			money -= currentBet;
+			break;
+			
+		case BLACKJACK:
+			money += 1.5 * currentBet;
+			break;
+			
+		default:
+			break;
+			
+		}
+	}
     
 }

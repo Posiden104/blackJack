@@ -15,7 +15,25 @@ public enum PlayerStatus {
     
     // player just joined the table, wait until the hand is finished
     NEW_PLAYER,
+    
+    // player needs to acknowledge the results
+    NEED_READY,
 
     // other error, call status again
-    RECALL
+    RECALL,
+    
+    // player is not at any table
+    NOT_SEATED,
+    
+    // player won
+    WON,
+    
+    // player lost
+    LOST,
+    
+    // player busted
+    BUSTED,
+    
+    // player got blackjack
+    BLACKJACK
 }
