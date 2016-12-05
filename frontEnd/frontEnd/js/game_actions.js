@@ -1,10 +1,73 @@
-var players = []
+// alert(localStorage[players]);
+
+function createCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function eraseCookie(name) {
+    createCookie(name,"",-1);
+}
+
+var players = [];
+var json_obj = JSON.parse(Get("http://game21.mybluemix.net/blackjack/v1.0/1/UPDATE"));
+
+
+var num_of_players = json_obj['table'].players.length;
+for(i = 0; i < json_obj['table'].players.length; i++) {
+    // alert(i);
+    player = {
+        playerID:json_obj['table'].players[i].playerID,
+        handValue:json_obj['table'].players[i].handValue,
+        money:json_obj['table'].players[i].money,
+        hand:[],
+        status:json_obj['table'].players[i].status,
+        checkedIn:json_obj['table'].players[i].checkedIn,
+        bet:json_obj['table'].players[i].bet
+    }
+    my_hand = json_obj['table'].players[i].hand;
+    player.hand = [];
+    for(a = 0; a < my_hand.length; a++) {
+        player.hand.push(my_hand[a].name);
+    }
+    players.push(player);
+}
 var playerID;
 var current_player;
 var your_index;
 var playing = false;
+var num_players;
+// sessionStorage.setItem("playing", "false");
+// document.cookie = "username = true;";
+// var ca = document.cookie;
+// alert(ca)
+window.onload=player_join();
 
-window.onload=player_join(playing);
+
+
+
+// alert("this is readcookies = " + readCookie('playing'));
+// eraseCookie('playing');
+if(readCookie('playing') == null || readCookie('playing') != 'true') {
+    createCookie('playing', 'false', 10);
+}
+// alert("reading cookie " + readCookie('playing'));
 
 function parse(str) {
     var args = [].slice.call(arguments, 1),
@@ -24,7 +87,7 @@ function Get(yourUrl){
 
 function player_hit() {
     alert("player hit");
-    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/HIT", playerID);
+    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/HIT", readCookie('playerID'));
 
     var json_obj = JSON.parse(Get(uri));
     json_obj = JSON.parse(Get("http://game21.mybluemix.net/blackjack/v1.0/1/UPDATE"));
@@ -52,11 +115,12 @@ function player_hit() {
             players[i].hand.push(my_hand[a].name);
         }
     }
+    location.reload();
 }
 
 function player_stay() {
 
-    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/STAY", playerID);
+    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/STAND", readCookie('playerID'));
     var json_obj = JSON.parse(Get(uri));
     json_obj = JSON.parse(Get("http://game21.mybluemix.net/blackjack/v1.0/1/UPDATE"));
     var num_of_players = json_obj['table'].players.length;
@@ -82,12 +146,14 @@ function player_stay() {
             players[i].hand.push(my_hand[a].name);
         }
     }
+    location.reload();
 }
 
 function player_bet(bet) {
 
-    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/BET/", playerID)
-    uri.concat(bet)
+    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/BET/", readCookie('playerID'))
+    uri = uri + bet;
+    alert(uri);
     var json_obj = JSON.parse(Get(uri));
     json_obj = JSON.parse(Get("http://game21.mybluemix.net/blackjack/v1.0/1/UPDATE"));
     var num_of_players = json_obj['table'].players.length;
@@ -115,35 +181,23 @@ function player_bet(bet) {
             players[i].hand.push(my_hand[a].name);
         }
     }
+    location.reload();
 }
 
-function player_join(playing) {
-    if(!playing) {
-        playing = true;
+function player_join() {
+    // var x = sessionStorage.getItem("playing");
+    // var x = readCookie('playing'); 
+    // alert(x);
+    if(readCookie('playing') == 'false') {
+        eraseCookie('playing');
+        createCookie('playing', 'true');
+        // sessionStorage.setItem("playing", "true");
+        alert("player joined");
         var uri = 'http://game21.mybluemix.net/blackjack/v1.0/join';
         var json_obj = JSON.parse(Get(uri));
         playerID = json_obj['playerID'];
-
+        createCookie('playerID', playerID);
         var num_of_players = json_obj['table'].players.length;
-        // alert(num_of_players);
-        
-        // i = json_obj['table'].players.length - 1;
-        // player = {
-        //         playerID:json_obj['table'].players[i].playerID,
-        //         handValue:json_obj['table'].players[i].handValue,
-        //         money:json_obj['table'].players[i].money,
-        //         hand:[],
-        //         status:json_obj['table'].players[i].status,
-        //         checkedIn:json_obj['table'].players[i].checkedIn,
-        //         bet:json_obj['table'].players[i].bet
-        //     }
-        // my_hand = json_obj['table'].players[num_of_players - 1].hand;
-        // player.hand = [];
-        // for(i = 0; i < my_hand.length; i++) {
-        //     player.hand.push(my_hand[i].name);
-        // }
-        // players.push(player);
-        // alert(players.length);
         for(i = 0; i < json_obj['table'].players.length; i++) {
             // alert(i);
             player = {
@@ -163,12 +217,20 @@ function player_join(playing) {
             players.push(player);
         }
         alert(playerID);
+        alert(players.length);
+        // document.getElementById("p1").innerHTML = "New text!";
+        // document.getElementById("p2").innerHTML = "New text!";
+        // document.getElementById("p3").innerHTML = "New text!";
+        // document.getElementById("p4").innerHTML = "New text!";
+        // document.getElementById("p5").innerHTML = "New text!";
+        // document.getElementById("p6").innerHTML = "New text!";
+
     }
 }
 
 function player_leave() {
 
-    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/leave", playerID);
+    var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/leave", readCookie('playerID'));
     Get(uri);
 }
 

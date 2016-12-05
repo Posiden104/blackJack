@@ -9,7 +9,7 @@ else {
     
     var playerName = "Player 1"
     var playerHand = players[0].hand;
-    alert(playerHand[0])
+    // alert(playerHand[0])
     var cardNum = ["1", "2", "3", "4", "5"];
     var handSize = playerHand.length;
 
