@@ -37,7 +37,7 @@ public class Controller {
 	@CrossOrigin
 	@RequestMapping("/blackjack/v1.0/{playerId}/{action}")
 	public JSONModel update(@PathVariable int playerId, @PathVariable PlayerAction action) {
-		System.out.println("player action");
+		//System.out.println("player action");
 		return bjs.update(playerId, action, 0);
 	}
 
