@@ -26,6 +26,7 @@ import com.blackjack.status.PlayerStatus;
 public class BlackJackServer {
 
 	private List<Table> tables;
+	private ArrayList<Thread> tableThreads;
 
 	private int playerID = 0;
 
@@ -34,15 +35,20 @@ public class BlackJackServer {
 
 	public BlackJackServer() {
 		tables = new ArrayList<>();
+		tableThreads = new ArrayList<>();
 		Table t = new Table(0);
 		tables.add(t);
-		new Thread(t).start();
+		Thread th = new Thread(t);
+		tableThreads.add(th);
+		th.start();
 	}
 
 	private Table addTable() {
 		Table t = new Table(tables.size());
 		tables.add(t);
-		new Thread(t).start();
+		Thread th = new Thread(t);
+		tableThreads.add(th);
+		th.start();
 		return t;
 	}
 
@@ -76,17 +82,11 @@ public class BlackJackServer {
 		return jm;
 	}
 
-	public void shutdown(){
-		for(Table t : tables){
+	public void shutdown() {
+		System.err.println("shutting down server");
+		for (Table t : tables) {
 			t.shutdown();
 		}
-	}
-	
-	@PostConstruct
-	public void init() {
-		System.err.println("shutting down server");
-		bjs = new BlackJackServer();
-		bjs.addTable();
 	}
 
 	public void removePlayer(int playerId) {
@@ -100,6 +100,26 @@ public class BlackJackServer {
 
 	}
 
+	public void reset() {
+		for (Table t : tables) {
+			t.shutdown();
+		}
+		try {
+			for (Thread th : tableThreads) {
+				th.join();
+			}
+		} catch (InterruptedException e) {
+			// e.printStackTrace();
+		}
+		tables.clear();
+		tableThreads.clear();
+	}
+
+	@PostConstruct
+	public void init() {
+		bjs = new BlackJackServer();
+		bjs.addTable();
+	}
 
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(BlackJackServer.class, args);

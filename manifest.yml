@@ -1,2 +1,3 @@
 applications:
 - name: Game21
+  memory: 512M
