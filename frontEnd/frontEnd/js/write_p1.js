@@ -2,20 +2,18 @@
 var message = '';
 
 if(players[0] == null) {
-    
-    else {
-        message = 'No Data Available';
-        document.write(message);
-    }  
+    message = 'No Data Available';
+    document.write(message);
 }
 else {
     
     var playerName = "Player 1"
-    var playerHand = player.hand;
+    var playerHand = players[0].hand;
+    alert(playerHand[0])
     var cardNum = ["1", "2", "3", "4", "5"];
     var handSize = playerHand.length;
 
-    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + player.Score + '</div><div class="panel-bet">' + player.bet + '</div>';
+    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + players[0].Score + '</div><div class="panel-bet">' + players[0].bet + '</div><div class="panel-bet">' + players[0].money + '</div>';
     
     for (i = 0; i < handSize; i++) {
         
