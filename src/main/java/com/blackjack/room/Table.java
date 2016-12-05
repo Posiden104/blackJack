@@ -167,7 +167,7 @@ public class Table implements Runnable {
 	public void update(int playerId, PlayerAction pa, int bet) {
 		Player p = getPlayer(playerId);
 
-		System.err.println("updating player " + playerId);
+		//System.err.println("updating player " + playerId);
 
 		switch (pa) {
 		case BET:
@@ -231,6 +231,8 @@ public class Table implements Runnable {
 			p.hasBet = true;
 			n_bet++;
 		}
+		
+		System.err.println("====================\nNumber of players bet = " + n_bet + "\nNumber of players = " + n_players);
 
 		if (n_bet == n_players) {
 			n_bet = 0;
@@ -355,6 +357,7 @@ public class Table implements Runnable {
 		for (Player p : players) {
 			p.clearHand();
 			p.setBet(0);
+			p.hasBet = false;
 			p.setStatus(PlayerStatus.WAITING_ON_BET);
 		}
 		dealerHand.clear();
