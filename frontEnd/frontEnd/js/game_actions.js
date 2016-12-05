@@ -60,7 +60,7 @@ for(i = 0; i < num_of_players; i++) {
         break;
     }
 }
-alert(players.length);
+// alert(players.length);
 
 var playerID;
 var current_player;
