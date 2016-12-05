@@ -212,10 +212,10 @@ function player_join() {
         // eraseCookie('playing');
         // createCookie('playing', 'true');
         // sessionStorage.setItem("playing", "true");
-        alert("You Joined");
         var uri = 'http://game21.mybluemix.net/blackjack/v1.0/join';
         var json_obj = JSON.parse(Get(uri));
         playerID = json_obj['playerID'];
+        alert("You Joined as player " + playerID);
         createCookie('playerID', playerID);
         var num_of_players = json_obj['table'].players.length;
         for(i = 0; i < json_obj['table'].players.length; i++) {
