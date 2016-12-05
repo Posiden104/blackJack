@@ -20,6 +20,7 @@ public class Player {
 
     // Public
     public boolean checkedIn = false;
+	public boolean hasBet;
 
     public Player(int id){
         playerID = id;

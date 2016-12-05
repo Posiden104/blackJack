@@ -20,12 +20,13 @@ public class Controller {
 	@Autowired
 	public BlackJackServer bjs;
 
-	/* Index endpoint */
+	/* Index endpoint
 	@RequestMapping("/")
 	public String index() {
-		return "BlackJackServer API index location.";
+		return "index.html";
 	}
-
+	*/
+	
 	/* Test endpoint */
 	@RequestMapping("/testing")
 	public String testing() {

@@ -19,6 +19,7 @@ public class Table implements Runnable {
 	private int n_CheckedIn = 0;
 	private int playerTurn = -1;
 	private int dealerHandValue = 0;
+	private int n_bet = 0;
 
 	private boolean shuffleNext = false;
 	private boolean isSoft = false;
@@ -225,14 +226,15 @@ public class Table implements Runnable {
 		p.setStatus(PlayerStatus.WAITING_ON_OTHER_PLAYER);
 
 		// check if all players have bets in
-		if (!p.checkedIn) {
+		if (!p.hasBet) {
 			System.out.println("Player " + p.getPlayerID() + "'s status is " + p.getStatus());
-			p.checkedIn = true;
-			n_CheckedIn++;
+			p.hasBet = true;
+			n_bet++;
 		}
 
-		if (n_CheckedIn == n_players) {
-			n_CheckedIn = 0;
+		if (n_bet == n_players) {
+			n_bet = 0;
+			System.err.println("all players have bet");
 			status = TableStatus.DEALING;
 		}
 	}
@@ -277,6 +279,9 @@ public class Table implements Runnable {
 
 	public void calculateWin() {
 		int dValue = getDealerHandValue();
+		if(dValue >21){
+			dValue = -1;
+		}
 		for (Player p : players) {
 			int value = p.getHandValue();
 			if (value > 21) {
