@@ -13,7 +13,7 @@ else {
     var cardNum = ["1", "2", "3", "4", "5"];
     var handSize = playerHand.length;
 
-    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + players[2].Score + '</div><div class="panel-bet">' + players[2].bet + '</div><div class="panel-bet">' + players[2].money + '</div>';
+    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + players[2].Score + '</div><div class="panel-bet">' + players[2].bet + '</div><div class="panel-bet">' + players[2].money + '</div><div class="panel-default">' + players[2].status  + '</div>';
     
     for (i = 0; i < handSize; i++) {
         
