@@ -1,14 +1,19 @@
-var message = '';
-var playerName = "ThisGuy5";
-var playerScore = "100";
 
-var playerHand = ["KC", "6C", "3C"];
+var message = '';
+var playerName = "SomeGuy";
+
+if(player.playerID == 5) {
+	playerName = "Player 5";
+}
+
+
+var playerHand = player.hand;
 var cardNum = ["1", "2", "3", "4", "5"];
 var handSize = playerHand.length;
 
 //Check if Google is in the watchlist
 if (1) {
-    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + playerScore + '</div>';
+    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + player.Score + '</div><div class="panel-bet">' + player.bet + '</div>';
     
     for (i = 0; i < handSize; i++) {
         
@@ -17,7 +22,6 @@ if (1) {
     
         document.write(message);
 }
-
 else {
     message = 'No Data Available';
     document.write(message);
