@@ -2,8 +2,9 @@ var players = []
 var playerID;
 var current_player;
 var your_index;
+var playing = false;
 
-window.onload=player_join();
+window.onload=player_join(playing);
 
 function parse(str) {
     var args = [].slice.call(arguments, 1),
@@ -116,46 +117,53 @@ function player_bet(bet) {
     }
 }
 
-function player_join() {
+function player_join(playing) {
+    if(!playing) {
+        playing = true;
+        var uri = 'http://game21.mybluemix.net/blackjack/v1.0/join';
+        var json_obj = JSON.parse(Get(uri));
+        playerID = json_obj['playerID'];
 
-    var uri = 'http://game21.mybluemix.net/blackjack/v1.0/join';
-    var json_obj = JSON.parse(Get(uri));
-    playerID = json_obj['playerID'];
-
-    var num_of_players = json_obj['table'].players.length;
-    alert(num_of_players);
-    
-    i = json_obj['table'].players.length - 1;
-    player = {
-            playerID:json_obj['table'].players[i].playerID,
-            handValue:json_obj['table'].players[i].handValue,
-            money:json_obj['table'].players[i].money,
-            hand:[],
-            status:json_obj['table'].players[i].status,
-            checkedIn:json_obj['table'].players[i].checkedIn,
-            bet:json_obj['table'].players[i].bet
+        var num_of_players = json_obj['table'].players.length;
+        alert(num_of_players);
+        
+        i = json_obj['table'].players.length - 1;
+        player = {
+                playerID:json_obj['table'].players[i].playerID,
+                handValue:json_obj['table'].players[i].handValue,
+                money:json_obj['table'].players[i].money,
+                hand:[],
+                status:json_obj['table'].players[i].status,
+                checkedIn:json_obj['table'].players[i].checkedIn,
+                bet:json_obj['table'].players[i].bet
+            }
+        my_hand = json_obj['table'].players[num_of_players - 1].hand;
+        player.hand = [];
+        for(i = 0; i < my_hand.length; i++) {
+            player.hand.push(my_hand[i].name);
         }
-    my_hand = json_obj['table'].players[num_of_players - 1].hand;
-    player.hand = [];
-    for(i = 0; i < my_hand.length; i++) {
-        player.hand.push(my_hand[i].name);
-    }
-    players.push(player);
-    // alert(players.length);
-    for(i = 0; i < json_obj['table'].players.length; i++) {
-        // alert(i);
-        players[i].handValue = json_obj['table'].players[i].handValue;
-        players[i].money = json_obj['table'].players[i].money;
-        players[i].status = json_obj['table'].players[i].status;
-        players[i].checkedIn = json_obj['table'].players[i].checkedIn;
-        players[i].bet = json_obj['table'].players[i].bet;
-        my_hand = json_obj['table'].players[i].hand;
-        players[i].hand = [];
-        for(a = 0; a < my_hand.length; a++) {
-            players[i].hand.push(my_hand[a].name);
+        players.push(player);
+        alert(players.length);
+        for(i = 0; i < json_obj['table'].players.length; i++) {
+            // alert(i);
+            player = {
+                playerID:json_obj['table'].players[i].playerID,
+                handValue:json_obj['table'].players[i].handValue,
+                money:json_obj['table'].players[i].money,
+                hand:[],
+                status:json_obj['table'].players[i].status,
+                checkedIn:json_obj['table'].players[i].checkedIn,
+                bet:json_obj['table'].players[i].bet
+            }
+            my_hand = json_obj['table'].players[num_of_players - 1].hand;
+            player.hand = [];
+            for(i = 0; i < my_hand.length; i++) {
+                player.hand.push(my_hand[i].name);
+            }
+            players.push(player);
         }
+        alert(playerID);
     }
-    alert(playerID);
 }
 
 function player_leave() {
