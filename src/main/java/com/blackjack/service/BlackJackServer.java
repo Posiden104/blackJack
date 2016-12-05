@@ -28,7 +28,7 @@ public class BlackJackServer {
 	private List<Table> tables;
 	private ArrayList<Thread> tableThreads;
 
-	private int playerID = 0;
+	private int playerId = 0;
 
 	@Autowired
 	public BlackJackServer bjs;
@@ -68,7 +68,7 @@ public class BlackJackServer {
 	}
 
 	public JoinModel addPlayer() {
-		Player p = new Player(++playerID);
+		Player p = new Player(++playerId);
 		JoinModel jm;
 		for (Table t : tables) {
 			if (t.addPlayer(p)) {
@@ -113,6 +113,7 @@ public class BlackJackServer {
 		}
 		tables.clear();
 		tableThreads.clear();
+		playerId = 0;
 	}
 
 	@PostConstruct

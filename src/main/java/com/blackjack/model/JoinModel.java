@@ -6,11 +6,11 @@ import com.blackjack.room.Table;
 public class JoinModel {
 	
 	// Public
-	public int playerId;
+	public int playerID;
 	public Table table;
 	
 	public JoinModel(Player p, Table t){
-		this.playerId = p.getPlayerID();
+		this.playerID = p.getPlayerID();
 		this.table = t;
 	}
 }

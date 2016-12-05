@@ -9,10 +9,10 @@ public class JSONModel {
 	
 	// Public
 	public Table table;
-	public int playerId;
+	public int playerID;
 	
 	public JSONModel(Player p, Table t){
 		table = t;
-		playerId = p.getPlayerID();
+		playerID = p.getPlayerID();
 	}
 }
