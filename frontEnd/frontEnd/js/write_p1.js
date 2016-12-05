@@ -20,7 +20,7 @@ else {
             message = message + '<img class="card' + cardNum[i] + '" src="pics/' + playerHand[i] + '.png" class="img-thumbnail" alt="Card1">';
     }
     
-    document.write(message);
+    document.getElementById("p1").innerHTML = message;
       
 }	
 
