@@ -130,6 +130,8 @@ function player_hit() {
         }
     }
     location.reload();
+    location.reload();
+    
 }
 
 function player_stay() {
@@ -161,6 +163,8 @@ function player_stay() {
         }
     }
     location.reload();
+    location.reload();
+
 }
 
 function player_bet(bet) {
@@ -196,6 +200,8 @@ function player_bet(bet) {
         }
     }
     location.reload();
+    location.reload();
+
 }
 
 function player_join() {
@@ -239,12 +245,15 @@ function player_join() {
         // document.getElementById("p5").innerHTML = "New text!";
         // document.getElementById("p6").innerHTML = "New text!";
         location.reload();
+        location.reload();
+
 
     // }
 }
 function player_ready() {
     var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/%s/READY", readCookie('playerID'));
     Get(uri);
+    location.reload();
 }
 function player_leave() {
 
