@@ -267,6 +267,5 @@ function reset() {
     var uri = parse("http://game21.mybluemix.net/blackjack/v1.0/reset");
     Get(uri);
     location.reload();
-    
 }
 
