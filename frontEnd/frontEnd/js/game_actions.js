@@ -125,25 +125,25 @@ function player_join(playing) {
         playerID = json_obj['playerID'];
 
         var num_of_players = json_obj['table'].players.length;
-        alert(num_of_players);
+        // alert(num_of_players);
         
-        i = json_obj['table'].players.length - 1;
-        player = {
-                playerID:json_obj['table'].players[i].playerID,
-                handValue:json_obj['table'].players[i].handValue,
-                money:json_obj['table'].players[i].money,
-                hand:[],
-                status:json_obj['table'].players[i].status,
-                checkedIn:json_obj['table'].players[i].checkedIn,
-                bet:json_obj['table'].players[i].bet
-            }
-        my_hand = json_obj['table'].players[num_of_players - 1].hand;
-        player.hand = [];
-        for(i = 0; i < my_hand.length; i++) {
-            player.hand.push(my_hand[i].name);
-        }
-        players.push(player);
-        alert(players.length);
+        // i = json_obj['table'].players.length - 1;
+        // player = {
+        //         playerID:json_obj['table'].players[i].playerID,
+        //         handValue:json_obj['table'].players[i].handValue,
+        //         money:json_obj['table'].players[i].money,
+        //         hand:[],
+        //         status:json_obj['table'].players[i].status,
+        //         checkedIn:json_obj['table'].players[i].checkedIn,
+        //         bet:json_obj['table'].players[i].bet
+        //     }
+        // my_hand = json_obj['table'].players[num_of_players - 1].hand;
+        // player.hand = [];
+        // for(i = 0; i < my_hand.length; i++) {
+        //     player.hand.push(my_hand[i].name);
+        // }
+        // players.push(player);
+        // alert(players.length);
         for(i = 0; i < json_obj['table'].players.length; i++) {
             // alert(i);
             player = {
@@ -155,10 +155,10 @@ function player_join(playing) {
                 checkedIn:json_obj['table'].players[i].checkedIn,
                 bet:json_obj['table'].players[i].bet
             }
-            my_hand = json_obj['table'].players[num_of_players - 1].hand;
+            my_hand = json_obj['table'].players[i].hand;
             player.hand = [];
-            for(i = 0; i < my_hand.length; i++) {
-                player.hand.push(my_hand[i].name);
+            for(a = 0; a < my_hand.length; a++) {
+                player.hand.push(my_hand[a].name);
             }
             players.push(player);
         }
