@@ -28,6 +28,11 @@ function eraseCookie(name) {
 var players = [];
 var json_obj = JSON.parse(Get("http://game21.mybluemix.net/blackjack/v1.0/1/UPDATE"));
 
+dealer_hand = json_obj['table'].dealerHand;
+dealerhand = [];
+for(a = 0; a < dealer_hand.length; a++) {
+    dealerhand.push(dealer_hand[a].name);
+}
 
 var num_of_players = json_obj['table'].players.length;
 for(i = 0; i < json_obj['table'].players.length; i++) {

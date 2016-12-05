@@ -1,24 +1,27 @@
+
 var message = '';
-var playerName = "Dealer";
-var playerScore = "21";
 
-var playerHand = ["KC", "6C", "3C"];
-var cardNum = ["1", "2", "3", "4", "5"];
-var handSize = playerHand.length;
-
-//Check if Google is in the watchlist
-if (1) {
-    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + playerScore + '</div>';
-    
-    for (i = 0; i < handSize; i++) {
-        
-        message = message + '<img class="card' + cardNum[i] + '" src="pics/' + playerHand[i] + '.png" class="img-thumbnail" alt="Card1">';
-    }
-    
-        document.write(message);
-}
-
-else {
+if(dealerhand[0] == null) {
     message = 'No Data Available';
     document.write(message);
 }
+else {
+    
+    var playerName = "Dealer"
+    var playerHand = dealerhand[0].hand;
+    // alert(playerHand[0])
+    var cardNum = ["1", "2", "3", "4", "5"];
+    var handSize = playerHand.length;
+
+    message = '<div class="panel-body">'  + playerName + '</div><div class="panel-score">' + '<div>';
+    
+    for (i = 0; i < handSize; i++) {
+        
+            message = message + '<img class="card' + cardNum[i] + '" src="pics/' + dealerhand[i] + '.png" class="img-thumbnail" alt="Card1">';
+    }
+    
+    document.getElementById("d1").innerHTML = message;
+      
+}	
+
+
